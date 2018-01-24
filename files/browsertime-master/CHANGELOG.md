@@ -1,9 +1,22 @@
 # Browsertime changelog
 
-UNRELEASED
+
+version 2.1.6 2018-01-24
+-------------------------
+### Fixed
+* Another WebPageReplay bug: Setting correct ports for WebPageReplaying
+
+version 2.1.5 2018-01-24
+-------------------------
+### Fixed
+* Replaying and ADB failed in the WebPageReplay Docker container (always trying to reply).
+
+version 2.1.4 2018-01-23
 -------------------------
 ### Fixed
 * You can now run WebPageReplay in the Docker container together with your Android phone.
+
+* The WPR Docker is updated with Firefox 58.
 
 * Updated to Chromedriver 2.35.0
 
