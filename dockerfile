@@ -51,7 +51,7 @@ RUN npm install --production
 
 COPY files/browsertime-master /opt/monroe/
 COPY files/run_experiment.py /opt/monroe/
-COPY files/run_experiment-wo-cache.py /opt/monroe/
+COPY files/run_experiment_wo_cache.py /opt/monroe/
 #COPY files/seleniumRunner.js /opt/monroe/lib/core
 COPY files/test_python_syntax.py /opt/monroe/
 COPY files/browsertime.py /opt/monroe/
