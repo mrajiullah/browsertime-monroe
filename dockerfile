@@ -7,7 +7,7 @@ ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 8.7.0
 ENV LC_ALL C
 ENV DEBCONF_NONINTERACTIVE_SEEN true
-ENV FIREFOX_VERSION 56.0.1
+ENV FIREFOX_VERSION 54.0.1
 ENV CHROME_VERSION 64.*
 ENV FONTS fonts-ipafont-gothic fonts-ipafont-mincho ttf-wqy-microhei fonts-wqy-microhei fonts-tlwg-loma fonts-tlwg-loma-otf fonts-gargi
 # firefox-locale-hi a font that does not exist in debian
@@ -51,7 +51,6 @@ RUN npm install --production
 
 COPY files/browsertime-master /opt/monroe/
 COPY files/run_experiment.py /opt/monroe/
-#COPY files/run_experiment_wo_cache.py /opt/monroe/
 COPY files/seleniumRunner.js /opt/monroe/lib/core
 COPY files/test_python_syntax.py /opt/monroe/
 COPY files/browsertime.py /opt/monroe/

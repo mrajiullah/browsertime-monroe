@@ -12,7 +12,7 @@ from subprocess import check_output, CalledProcessError
 
 def browse_chrome(iface,url,getter_version):
 
-	
+	print "Cache folder for chrome {}",format(folder_name)
 	har_stats={}
 	loading=True
 	try:
@@ -25,7 +25,7 @@ def browse_chrome(iface,url,getter_version):
 		else:
 			cmd=['bin/browsertime.js',"https://"+str(url), 
 				'--skipHar','-n','1','--resultDir','web-res',
-				'--chrome.args', 'no-sandbox',
+				'--chrome.args', 'no-sandbox','--chrome.args', 
 				'--userAgent', '"Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.75  Mobile Safari/537.36"']
 			output=check_output(cmd)
 		with open('web-res/browsertime.json') as data_file:    

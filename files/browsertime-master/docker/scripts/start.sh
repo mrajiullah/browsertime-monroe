@@ -7,9 +7,6 @@ firefox --version
 BROWSERTIME_RECORD=/usr/src/app/bin/browsertimeWebPageReplay.js
 BROWSERTIME=/usr/src/app/bin/browsertime.js
 
-HTTP_PORT=80
-HTTPS_PORT=443
-
 if [ -n "$START_ADB_SERVER" ] ; then
   WPR_HTTP_PORT=8080
   WPR_HTTPS_PORT=8081
@@ -35,12 +32,11 @@ function setupADB(){
   if [ -n "$START_ADB_SERVER" ] ; then
     sudo adb start-server
     sudo adb devices
+  fi
 
-    if [ $REPLAY ] ; then
+  if [ $REPLAY ] ; then
       sudo adb reverse tcp:$WPR_HTTP_PORT tcp:$WPR_HTTP_PORT
       sudo adb reverse tcp:$WPR_HTTPS_PORT tcp:$WPR_HTTPS_PORT
-    fi
-
   fi
 }
 
@@ -58,7 +54,7 @@ function runWebPageReplay() {
   WAIT=${WAIT:-2000}
 
   webpagereplaywrapper record --start $WPR_PARAMS
-  
+
   $BROWSERTIME_RECORD  --firefox.preference network.dns.forceResolve:127.0.0.1 --firefox.acceptInsecureCerts --chrome.args host-resolver-rules="MAP *:$HTTP_PORT 127.0.0.1:$WPR_HTTP_PORT,MAP *:$HTTPS_PORT 127.0.0.1:$WPR_HTTPS_PORT,EXCLUDE localhost" --pageCompleteCheck "return (function() {try { if (performance.now() > ((performance.timing.loadEventEnd - performance.timing.navigationStart) + $WAIT)) {return true;} else return false;} catch(e) {return true;}})()" "$@"
 
   webpagereplaywrapper record --stop $WPR_PARAMS

@@ -87,13 +87,15 @@ EXPCONFIG = {
 	"verbosity": 2,  # 0 = "Mute", 1=error, 2=Information, 3=verbose
 	"resultdir": "/monroe/results/",
 	"modeminterfacename": "InternalInterface",
-	"urls": ['www.facebook.com/telia/','www.wikipedia.org','www.linkedin.com/company/teliacompany',
-        'www.instagram.com/leomessi/','www.google.com/#q=stockholm,+sweden',
-        'www.ebay.com','www.nytimes.com','www.theguardian.com/international','www.youtube.com/watch?v=544vEgMiMG0',
-        'www.wikihow.com','www.stackoverflow.com',
-        'www.kayak.com','www.yelp.com','www.etsy.com',
-        'www.udemy.com', 'www.coursera.com',
-        'www.imgur.com','www.9gag.com','www.xe.com','www.expedia.com'],
+	"urls": ['www.facebook.com/telia/','www.wikipedia.org','www.linkedin.com/company/teliacompany', 
+	'www.xe.com',
+	'www.instagram.com/leomessi/','www.google.com/#q=stockholm,+sweden', 
+	'www.ebay.com','www.nytimes.com','www.theguardian.com/international','www.youtube.com/watch?v=544vEgMiMG0',
+	'www.wikihow.com','www.stackoverflow.com',
+	'www.expedia.com',
+	'www.kayak.com','www.yelp.com','www.etsy.com', 
+	'www.udemy.com', 'www.coursera.com',
+	'www.imgur.com','www.9gag.com'],
 	"http_protocols":["h1s","h2"],
 	"browsers":["firefox","chrome"],
 	"iterations": 1,
@@ -226,7 +228,6 @@ def run_exp(meta_info, expconfig, url,count):
 	
 	if bool(har_stats):
 		shutil.rmtree('web-res')
-		har_stats.pop("statistics")
 	#har_stats["browserScripts"][0]["timings"].pop('resourceTimings')
 	else:
 		return
