@@ -88,17 +88,16 @@ EXPCONFIG = {
 	"resultdir": "/monroe/results/",
 	"modeminterfacename": "InternalInterface",
 	"urls": ['www.facebook.com/telia/','www.wikipedia.org','www.linkedin.com/company/teliacompany', 
-	#'www.uk.sports.yahoo.com',
-	'www.instagram.com/leomessi/','www.google.com/#q=stockholm,+sweden', 
-	'www.ebay.com','www.nytimes.com','www.theguardian.com/international','www.youtube.com/watch?v=544vEgMiMG0',
-	'www.wikihow.com','www.stackoverflow.com',
-	#'www.search.yahoo.com',
-	'www.kayak.com','www.yelp.com','www.etsy.com', 
-	'www.udemy.com', 'www.coursera.com',
-	#'www.sports.yahoo.com',
-	'www.imgur.com','www.9gag.com'],
+        'www.reddit.com',
+        'www.instagram.com/leomessi/','www.google.com/#q=stockholm,+sweden', 
+        'www.ebay.com','www.twitter.com','www.theguardian.com/international','www.youtube.com/watch?v=544vEgMiMG0',
+        'www.tmall.com','www.stackoverflow.com',
+        'www.live.com','microsoft.com',
+        'www.kayak.com','www.yelp.com','www.etsy.com', 
+        'www.flickr.com', 'www.coursera.com',
+        'www.imgur.com'],
 	"http_protocols":["h1s","h2"],
-	"browsers":["firefox"],
+	"browsers":["firefox","chrome"],
 	"iterations": 1,
 	"allowed_interfaces": ["eth0","op0","op1","op2"],  # Interfaces to run the experiment on
 	"interfaces_without_metadata": ["eth0"]  # Manual metadata on these IF
@@ -229,21 +228,20 @@ def run_exp(meta_info, expconfig, url,count):
 	
 	if bool(har_stats):
 		shutil.rmtree('web-res')
-		har_stats.pop("statistics")
 	#har_stats["browserScripts"][0]["timings"].pop('resourceTimings')
 	else:
 		return
 	try:
-		har_stats["ping_max"]=ping_max
-		har_stats["ping_avg"]=ping_avg
-		har_stats["ping_min"]=ping_min
-		har_stats["ping_exp"]=1
+		har_stats["ping_max"]=float(ping_max)
+		har_stats["ping_avg"]=float(ping_avg)
+		har_stats["ping_min"]=float(ping_min)
+		har_stats["ping_exp"]=True
 	except Exception:
 		print("Ping info is not available")
-		har_stats["ping_exp"]=0
+		har_stats["ping_exp"]=False
 	
 	har_stats["url"]=url
-	har_stats["Protocol"]=getter_version	
+	#har_stats["Protocol"]=getter_version	
 	har_stats["DataId"]= expconfig['dataid']
 	har_stats["DataVersion"]= expconfig['dataversion']
 	har_stats["NodeId"]= expconfig['nodeid']
@@ -277,55 +275,56 @@ def run_exp(meta_info, expconfig, url,count):
 	try:
 		har_stats["IMSIMCCMNC"]=meta_info["IMSIMCCMNC"]
 		
-		if IMSIMCCMNC==24001:
+		if har_stats["IMSIMCCMNC"]==24001:
 			har_stats["Ops"]="Telia (SE)"
-		if IMSIMCCMNC==24201:
+		if har_stats["IMSIMCCMNC"]==24201:
 			har_stats["Ops"]="Telenor (NO)"
-		if IMSIMCCMNC==24008:
+		if har_stats["IMSIMCCMNC"]==24008:
 			har_stats["Ops"]="Telenor (SE)"
-		if IMSIMCCMNC==24002:
+		if har_stats["IMSIMCCMNC"]==24002:
 			har_stats["Ops"]="Tre (SE)"
-		if IMSIMCCMNC==22201:
+		if har_stats["IMSIMCCMNC"]==22201:
 			har_stats["Ops"]="TIM (IT)"
-		if IMSIMCCMNC==21404:
+		if har_stats["IMSIMCCMNC"]==21404:
 			har_stats["Ops"]="Yoigo (ES)"
 		
-		if IMSIMCCMNC==22210:
+		if har_stats["IMSIMCCMNC"]==22210:
 			har_stats["Ops"]="Vodafone (IT)"
-		if IMSIMCCMNC==24202:
+		if har_stats["IMSIMCCMNC"]==24202:
 			har_stats["Ops"]="Telia (NO)"
 			
-		if IMSIMCCMNC==24214:
+		if har_stats["IMSIMCCMNC"]==24214:
 			har_stats["Ops"]="ICE (NO)"
-		if IMSIMCCMNC==22288:
+		if har_stats["IMSIMCCMNC"]==22288:
 			har_stats["Ops"]="Wind (IT)"
-		if IMSIMCCMNC==21403:
+		if har_stats["IMSIMCCMNC"]==21403:
 			har_stats["Ops"]="Orange (ES)"
 		
-		if IMSIMCCMNC==24001:
+		if har_stats["IMSIMCCMNC"]==24001:
 			har_stats["Country"]="SE"
-		if IMSIMCCMNC==24201:
+		if har_stats["IMSIMCCMNC"]==24201:
 			har_stats["Country"]="NO"
-		if IMSIMCCMNC==24008:
+		if har_stats["IMSIMCCMNC"]==24008:
 			har_stats["Country"]="SE"
-		if IMSIMCCMNC==24002:
+		if har_stats["IMSIMCCMNC"]==24002:
 			har_stats["Country"]="SE"
-		if IMSIMCCMNC==22201:
+		if har_stats["IMSIMCCMNC"]==22201:
 			har_stats["Country"]="IT"
-		if IMSIMCCMNC==21404:
+		if har_stats["IMSIMCCMNC"]==21404:
 			har_stats["Country"]="ES"
 		
-		if IMSIMCCMNC==22210:
+		if har_stats["IMSIMCCMNC"]==22210:
 			har_stats["Country"]="IT"
-		if IMSIMCCMNC==24202:
+		if har_stats["IMSIMCCMNC"]==24202:
 			har_stats["Country"]="NO"
 			
-		if IMSIMCCMNC==24214:
+		if har_stats["IMSIMCCMNC"]==24214:
 			har_stats["Country"]="NO"
-		if IMSIMCCMNC==22288:
+		if har_stats["IMSIMCCMNC"]==22288:
 			har_stats["Country"]="IT"
-		if IMSIMCCMNC==21403:
+		if har_stats["IMSIMCCMNC"]==21403:
 			har_stats["Country"]="ES"
+		
 
 	except Exception:
 		print("IMSIMCCMNC info is not available")
@@ -337,6 +336,7 @@ def run_exp(meta_info, expconfig, url,count):
 
 	
 	
+        print "First Run {}".format(first_run)
 	#msg=json.dumps(har_stats)
 	with open('/tmp/'+str(har_stats["NodeId"])+'_'+str(har_stats["DataId"])+'_'+str(har_stats["Timestamp"])+'.json', 'w') as outfile:
 		json.dump(har_stats, outfile)
@@ -344,10 +344,10 @@ def run_exp(meta_info, expconfig, url,count):
 	if expconfig['verbosity'] > 2:
 		#print json.dumps(har_stats, indent=4, sort_keys=True)
 		#print har_stats["browser"],har_stats["Protocol"],har_stats["url"]
-		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["Protocol"],har_stats["url"], har_stats["browserScripts"][0]["timings"]["pageTimings"]["pageLoadTime"]))
+		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["Protocol"],har_stats["url"], har_stats["pageLoadTime"]))
 	if not DEBUG:
 		#print har_stats["browser"],har_stats["Protocol"],har_stats["url"]
-		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["Protocol"],har_stats["url"], har_stats["browserScripts"][0]["timings"]["pageTimings"]["pageLoadTime"]))
+		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["Protocol"],har_stats["url"], har_stats["pageLoadTime"]))
 		if first_run==0:
 			monroe_exporter.save_output(har_stats, expconfig['resultdir'])
 	
