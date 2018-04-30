@@ -59,12 +59,13 @@ browser_kind=''
 h1='http://'
 h1s='https://'
 h2='https://'
+quic='https://'
 current_directory =''
 har_directory =''
 
 first_run=1
 # Configuration
-DEBUG = True
+DEBUG = False
 CONFIGFILE = '/monroe/config'
 
 # Default values (overwritable from the scheduler)
@@ -92,14 +93,14 @@ EXPCONFIG = {
         'www.instagram.com/leomessi/','www.google.com/#q=stockholm,+sweden', 
         'www.ebay.com','www.twitter.com','www.theguardian.com/international','www.youtube.com/watch?v=544vEgMiMG0',
         'www.tmall.com','www.stackoverflow.com',
-        'www.live.com','microsoft.com',
+        'www.live.com','www.microsoft.com',
         'www.kayak.com','www.yelp.com','www.etsy.com', 
         'www.flickr.com', 'www.coursera.com',
         'www.imgur.com'],
 	"http_protocols":["h1s","h2"],
 	"browsers":["firefox","chrome"],
 	"iterations": 1,
-	"allowed_interfaces": ["eth0","op0","op1","op2"],  # Interfaces to run the experiment on
+	"allowed_interfaces": ["op0","op1","op2"],  # Interfaces to run the experiment on
 	"interfaces_without_metadata": ["eth0"]  # Manual metadata on these IF
 	}
 
@@ -336,7 +337,7 @@ def run_exp(meta_info, expconfig, url,count):
 
 	
 	
-        print "First Run {}".format(first_run)
+        #print "First Run {}".format(first_run)
 	#msg=json.dumps(har_stats)
 	with open('/tmp/'+str(har_stats["NodeId"])+'_'+str(har_stats["DataId"])+'_'+str(har_stats["Timestamp"])+'.json', 'w') as outfile:
 		json.dump(har_stats, outfile)
@@ -344,10 +345,10 @@ def run_exp(meta_info, expconfig, url,count):
 	if expconfig['verbosity'] > 2:
 		#print json.dumps(har_stats, indent=4, sort_keys=True)
 		#print har_stats["browser"],har_stats["Protocol"],har_stats["url"]
-		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["Protocol"],har_stats["url"], har_stats["pageLoadTime"]))
+		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["protocol"],har_stats["url"], har_stats["pageLoadTime"]))
 	if not DEBUG:
 		#print har_stats["browser"],har_stats["Protocol"],har_stats["url"]
-		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["Protocol"],har_stats["url"], har_stats["pageLoadTime"]))
+		print("Done with Browser: {}, HTTP protocol: {}, url: {}, PLT: {}".format(har_stats["browser"],har_stats["protocol"],har_stats["url"], har_stats["pageLoadTime"]))
 		if first_run==0:
 			monroe_exporter.save_output(har_stats, expconfig['resultdir'])
 	
@@ -568,12 +569,17 @@ if __name__ == '__main__':
 				elif protocol == 'h2':
 					getter = h2
 					getter_version = 'HTTP2'
+				elif protocol == 'quic':
+					getter = quic
+					getter_version = 'QUIC'
 				else:
-					print 'Unknown HTTP Scheme: <HttpMethod:h1/h1s/h2>' 
+					print 'Unknown HTTP Scheme: <HttpMethod:h1/h1s/h2/quic>' 
 					sys.exit()	
 				random.shuffle(browsers)
 				for browser in browsers:
 					browser_kind=browser 
+					if browser == "firefox" and protocol == "quic":
+						continue
 					for run in range(start_count, iterations):
 						# Create a experiment process and start it
 						print "Browsing {} with {} browser and {} protocol".format(url,browser,protocol) 
